@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>A read on the orchestration layer behind Resideline's three-strategy scoring</title>
+  <meta name="description" content="I saw the three-strategy scoring and the 500-property CSV on the marketing page. My bet is the STR side of that report is the one keeping you up at night, because the comps are thinner and the cost model is different." />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta property="og:title" content="A read on the orchestration layer behind Resideline's three-strategy scoring" />
+  <meta property="og:description" content="Prepared for Resideline. A short note from Eduba on the AVM stack behind flip, long-term rental, and short-term rental scoring." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <header class="topbar" role="banner">
+    <div class="topbar-inner">
+      <a class="brand" href="#top" aria-label="Resideline">
+        <span class="brand-mark" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 11.5 12 4l9 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M5 10.5V20h14v-9.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M10 20v-5h4v5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="brand-name">Resideline</span>
+      </a>
+      <div class="topbar-meta" aria-hidden="true">
+        <span class="topbar-dot"></span><span>Prepared read</span> &nbsp;·&nbsp; eMerge Americas 2026
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="wrap">
+        <span class="eyebrow">
+          <span class="tag">For</span>
+          Resideline, from Eduba
+        </span>
+        <h1>
+          A read on the <span class="underline">orchestration layer</span> behind Resideline's three-strategy scoring.
+        </h1>
+        <p class="hero-sub">
+          Flip, long-term rental, short-term rental, one report, $99 a month. This page unpacks where that stack holds, where it strains at bulk, and where the API customer will press first.
+        </p>
+        <div class="hero-meta" aria-label="Context">
+          <span class="pip"><span>PropTech · AVM</span></span>
+          <span class="pip"><span>Booth SMB21</span></span>
+          <span class="pip"><span>Read time · 4 min</span></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- PITCH BODY -->
+    <section aria-labelledby="pitch-heading">
+      <div class="wrap">
+        <span class="section-label">The read</span>
+        <h2 id="pitch-heading">Two products live inside the Resideline app, and they sit on different assumptions.</h2>
+        <p class="lede">
+          You built a platform that tells investors what a property rents, sells, or flips for, in one report. The bulk-analysis feature (500 properties from CSV in seconds) is the real unlock. The <a href="https://resideline.com/resideline-api" target="_blank" rel="noopener">resideline.com/resideline-api</a> page says you are already thinking past the single-investor customer toward the PropTech builders who need your AVM as a feed. That is a second product living inside the first one.
+        </p>
+
+        <div class="pitch" style="margin-top: 40px;">
+          <div class="pitch-lead">
+            <p>Here is how we would look at the stack specifically. Roughly 60% of what makes the three-strategy report work is traditional code and database: MLS ingestion, comp joins, cost tables, rent seasonality math. Roughly 30% is rule-based logic: which comps qualify, which cost rule applies, which exit strategy is eligible for a given property type. The last 10% is the genuine AI layer: valuation synthesis, confidence calibration, and the judgment calls on thin markets.</p>
+
+            <p>Most PropTech shops get this ratio backwards, put an LLM where a SQL query would do, and watch their infra cost eat the $99 margin. The orchestration pattern keeps each layer honest and each cost centered, so you can tell which call path ran on a given deal.</p>
+          </div>
+
+          <div class="stack-card" aria-label="Stack composition: 60 / 30 / 10">
+            <div class="stack-title">Stack composition, by our read</div>
+            <div class="stack-bar" role="img" aria-label="60 percent code and database, 30 percent rule-based logic, 10 percent genuine AI">
+              <span class="b-60"></span>
+              <span class="b-30"></span>
+              <span class="b-10"></span>
+            </div>
+            <div class="stack-rows">
+              <div class="stack-row">
+                <div class="pct">60<span style="font-size:14px;color:var(--ink-3);">%</span></div>
+                <div class="label">Code &amp; database</div>
+                <div class="desc">MLS ingestion, comp joins, cost tables, rent seasonality math.</div>
+              </div>
+              <div class="stack-row">
+                <div class="pct">30<span style="font-size:14px;color:var(--ink-3);">%</span></div>
+                <div class="label">Rule-based logic</div>
+                <div class="desc">Comp eligibility, cost rule selection, strategy qualification per property type.</div>
+              </div>
+              <div class="stack-row ai">
+                <div class="pct">10<span style="font-size:14px;color:var(--ink-3);">%</span></div>
+                <div class="label">Genuine AI</div>
+                <div class="desc">Valuation synthesis, confidence calibration, thin-market judgment.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout">
+          When a deal prices wrong across the three strategies, the useful question is: which layer lied? That answer lives in the orchestration, not the model.
+        </div>
+      </div>
+    </section>
+
+    <!-- THREE-STRATEGY -->
+    <section aria-labelledby="three-heading">
+      <div class="wrap">
+        <span class="section-label">Three strategies, three engineering problems</span>
+        <h2 id="three-heading">One endpoint, three comp sets, three cost models.</h2>
+        <p class="lede">
+          Flip, LTR, and STR each need different comps, different cost rules, and different confidence bands. The "instantly" promise at $99 pricing means the unit economics quietly depend on whichever call path is cheapest, not the one the user needs.
+        </p>
+
+        <div class="three">
+          <article class="strategy">
+            <span class="strategy-tag">Flip</span>
+            <h3>ARV and rehab, comp-driven.</h3>
+            <p>Needs sold comps within 90 days, renovation cost table keyed to zip and finish level. Cost drift shows up fastest here.</p>
+            <div class="risk">Risk: stale rehab tables → margin leak.</div>
+          </article>
+          <article class="strategy">
+            <span class="strategy-tag">Long-term rent</span>
+            <h3>Rent comp, not sale comp.</h3>
+            <p>Different comp set. Lease data is sparser than sale data. Vacancy and concession assumptions tend to live in code, not in the UI.</p>
+            <div class="risk">Risk: assumption drift hidden from the user.</div>
+          </article>
+          <article class="strategy">
+            <span class="strategy-tag">Short-term rent</span>
+            <h3>Seasonality, occupancy, cost.</h3>
+            <p>Thinnest comp set. Most volatile cost model. After any MLS or booking-feed change, STR accuracy drifts quietly for a week before anyone notices.</p>
+            <div class="risk">Risk: silent STR drift after upstream change.</div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- CASE STUDY -->
+    <section aria-labelledby="case-heading">
+      <div class="wrap">
+        <span class="section-label">Closest case</span>
+        <h2 id="case-heading">The operator-side of the same market.</h2>
+        <p class="lede">
+          Simple Lyfe Stays is the closest Eduba engagement to Resideline's surface area. Same multi-strategy residential, same pipeline-orchestration problem, different seat at the table.
+        </p>
+
+        <div class="case">
+          <div>
+            <span class="case-label">Case · Simple Lyfe Stays</span>
+            <h3 id="case-heading-detail">Audit-first scope built for a founder-led ops team.</h3>
+            <p>Mike Holcomb runs a 46-property short-term rental company and hired Eduba to design the orchestration layer sitting on top of his ops stack. The deliverable was a strategic operations framework that made the multi-source data flow legible to the people running it, which is the same problem your AVM has when a single deal prices wrong and you don't know which layer lied.</p>
+            <p style="margin-top:10px;">Scoped as an audit-first engagement with a methodology transfer, structured in two tiers so a founder-led PropTech can scope to the piece that fits.</p>
+          </div>
+          <div class="stats" role="list">
+            <div class="stat" role="listitem">
+              <span class="n">46</span>
+              <span class="l">Properties under mgmt</span>
+            </div>
+            <div class="stat" role="listitem">
+              <span class="n">3</span>
+              <span class="l">Exit strategies (STR · LTR · Flip)</span>
+            </div>
+            <div class="stat" role="listitem">
+              <span class="n">2</span>
+              <span class="l">Scoped tiers delivered</span>
+            </div>
+            <div class="stat" role="listitem">
+              <span class="n">1</span>
+              <span class="l">Orchestration framework shipped</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- METHODOLOGY -->
+    <section aria-labelledby="method-heading">
+      <div class="wrap">
+        <span class="section-label">Published method</span>
+        <h2 id="method-heading">When one strategy misprices, the methodology tells you which layer to open first.</h2>
+        <p class="lede">
+          Interpretable Context Methodology treats the context that drives an agent (or an AVM) as a layered filesystem. Identity, reference, contracts, working artifacts. Each layer legible, each one testable.
+        </p>
+
+        <div class="methods">
+          <article class="method">
+            <span class="method-tag">Paper · ACM TiiS (submitted)</span>
+            <h3>Interpretable Context Methodology (ICM)</h3>
+            <p>Folder structure as agent architecture. L0 identity through L4 working artifacts. A 52-member practitioner community, U-shaped edit patterns observed in production workspaces. Built for the exact problem of an AVM that is really a stack of calls pretending to be a model.</p>
+            <div class="links">
+              <a href="https://github.com/RinDig/Interpretable-Context-Methodology-ICM-" target="_blank" rel="noopener">github.com/RinDig/Interpretable-Context-Methodology-ICM-</a>
+            </div>
+          </article>
+          <article class="method">
+            <span class="method-tag">Paper · arXiv</span>
+            <h3>Ethics Engine</h3>
+            <p>A psychometric assessment tool for evaluating ideological and moral patterns in LLMs. Relevant if the API customer list ever starts asking questions about model behaviour disclosure.</p>
+            <div class="links">
+              <a href="https://arxiv.org/abs/2510.11742" target="_blank" rel="noopener">arxiv.org/abs/2510.11742</a>
+              <a href="https://github.com/RinDig/AuditEngine" target="_blank" rel="noopener">github.com/RinDig/AuditEngine</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- CREDENTIALS -->
+    <section aria-labelledby="creds-heading">
+      <div class="wrap">
+        <span class="section-label">Who you would be talking to</span>
+        <h2 id="creds-heading">Receipts, not a pitch deck.</h2>
+
+        <div class="creds">
+          <div class="cred">
+            <span class="marker" aria-hidden="true"></span>
+            <div>
+              <h4>1,500+ people trained across enterprise engagements since May 2025.</h4>
+              <p>Workforce AI enablement work delivered through Correlation One at Pacific Life and Colgate-Palmolive.</p>
+            </div>
+          </div>
+          <div class="cred">
+            <span class="marker" aria-hidden="true"></span>
+            <div>
+              <h4>KPMG UK (Big Four), 40+ executives trained.</h4>
+              <p>Regulated-industry, leadership-level audience. Relevant when an enterprise API prospect asks where the methodology has been put in front of risk-sensitive buyers.</p>
+            </div>
+          </div>
+          <div class="cred">
+            <span class="marker" aria-hidden="true"></span>
+            <div>
+              <h4>Published work in ACM TiiS, arXiv, and Saints Academic Review.</h4>
+              <p>Interpretable Context Methodology and Ethics Engine, plus the microservice workflow patterns thread. Reproducible, MIT-licensed, open for audit.</p>
+            </div>
+          </div>
+          <div class="cred">
+            <span class="marker" aria-hidden="true"></span>
+            <div>
+              <h4>Eduba partners with NLP Logix for work that sits below the orchestration layer.</h4>
+              <p>NLP Logix has been in machine learning since 2011 and runs over 150 data scientists. If the bottleneck turns out to be production MLS pipeline or serving infra, that is where the conversation routes.</p>
+            </div>
+          </div>
+        </div>
+
+        <p style="margin-top: 24px; font-size: 14.5px; color: var(--ink-3);">
+          One more line, worth noting if your growth path runs through content. Jake also built an online community to 22,000 members in five weeks.
+        </p>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section aria-labelledby="cta-heading">
+      <div class="wrap">
+        <div class="cta">
+          <div>
+            <span class="section-label">The ask</span>
+            <h2 id="cta-heading">30 minutes. Bring the one AVM call path you don't fully trust.</h2>
+            <p>We will walk it through the frame on a whiteboard and tell you whether it is an orchestration problem or a model problem. If it belongs below the orchestration layer, we will say so and route you to NLP Logix. Either way you leave with a cleaner read.</p>
+            <div class="cta-fineprint">No slide deck. No retainer pitch. One call, one call path, one answer.</div>
+          </div>
+          <div class="cta-actions">
+            <a class="btn btn-primary" href="https://calendly.com/thecro-eduba/30min" target="_blank" rel="noopener">
+              Book 30 min with Matt Creamer
+              <svg class="arrow" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+            <div class="contact-chip">
+              <span class="role">Matt Creamer</span>
+              <span>· CRO, Eduba</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer role="contentinfo">
+    <div class="footer-inner">
+      <div class="prep">Prepared by Eduba · <a href="https://eduba.io" target="_blank" rel="noopener">eduba.io</a></div>
+      <div>A one-off read for Resideline ahead of eMerge Americas 2026. Not a form page. Not a mailing list. The calendar link is the whole ask.</div>
+    </div>
+  </footer>
+
+</body>
+</html>
